@@ -54,6 +54,11 @@ Route::post('/borrar_esp_med/{id}', [AdminController::class, 'editar_esp_med']);
 Route::delete('/borrar_esp_med/{id}', [AdminController::class, 'borrar_esp_med']);
 
 
+Route::get('/obtener-medicos', [AdminController::class, 'obtenerMedicos'])->name('obtener.medicos');
+Route::get('/obtener-horarios', [AdminController::class, 'obtenerHorarios'])->name('obtener.horarios');
+
+
+
 use App\Http\Controllers\HorarioController;
 
 Route::get('/mi-horario', [HorarioController::class, 'mostrarVista'])->name('horario.mostrarVista');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Consultorio extends Model
 {
@@ -14,9 +15,10 @@ class Consultorio extends Model
         'id_medico',
     ];
    // En tu modelo Consultorio
-    public function user()
+    
+    public function medico()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_medico');
     }
 
 }
