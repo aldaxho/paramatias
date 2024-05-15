@@ -1,0 +1,25 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Estilos para los modales */
+.modal-body {
+    padding: 20px;
+}
+
+/* Estilos específicos para la tabla */
+.table th,
+.table td {
+    text-align: center;
+}
+
+/* Estilos para el botón de acción */
+.btn-action {
+    margin-right: 5px;
+}
