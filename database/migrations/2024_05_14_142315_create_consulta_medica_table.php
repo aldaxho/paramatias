@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('fecha');
             $table->unsignedBigInteger('id_paciente');
-            $table->foreignId('id_servicios')->constrained('servicios')->onDelete('cascade')->onUpdate('cascade'); // Cambiar 'especialidades' por el nombre de tu tabla de especialidades
+            $table->foreignId('id_especialidad')->constrained('especialidads')->onDelete('cascade')->onUpdate('cascade'); // Cambiar 'especialidades' por el nombre de tu tabla de especialidades
             $table->foreignId('id_consultorio')->constrained('consultorio')->onDelete('cascade')->onUpdate('cascade'); // Cambiar 'especialidades' por el nombre de tu tabla de especialidades
 
             $table->timestamps();

@@ -59,7 +59,7 @@
                         <tr>
                             <td>{{ $consultorio->id }}</td>
                             <td>{{ $consultorio->nombre }}</td>
-                            <td>{{ $consultorio->id_medico }} </td>
+                            <td>{{ $consultorio->medico->nombres }} </td>
 
 
                             <td>

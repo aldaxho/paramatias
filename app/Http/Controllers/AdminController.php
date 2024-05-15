@@ -15,7 +15,8 @@ use App\Models\EspecialidadMedico;
 use App\Models\ConsultaMedica;
 use App\Models\Consultorio;
 use App\Models\Horario;
-
+use App\Models\MedicoHorario;
+use Illuminate\Support\Facades\Log;
 
 
 class AdminController extends Controller
@@ -65,6 +66,49 @@ class AdminController extends Controller
         // Si no se encuentra un registro UsuarioRol, o el rol no coincide con ninguno de los roles especificados, redirigir a una vista predeterminada
         return view('admin.inicio');
     }
+    public function obtenerMedicos(Request $request)
+    {
+        $especialidadId = $request->input('especialidad_id');
+
+        // Realizar la consulta para obtener los nombres e IDs de los médicos
+        $medicos = User::whereIn('id', function($query) use ($especialidadId) {
+            $query->select('id_medico')
+                ->from('medico_horarios')
+                ->join('especialidads', 'especialidads.id', '=', 'medico_horarios.id_especialidades')
+                ->where('especialidads.id', $especialidadId);
+        })->select('id', 'nombres')->get();
+
+        // Devolver los médicos en formato JSON
+        return response()->json($medicos);
+    }
+
+
+    public function obtenerHorarios(Request $request)
+    {
+        $medicoId = $request->input('medico_id');
+
+        // Agregar una declaración de depuración para verificar el ID del médico
+        \Log::info('ID del médico recibido:', ['medico_id' => $medicoId]);
+
+        // Realizar la consulta para obtener los horarios disponibles para el médico seleccionado
+        $horarios = MedicoHorario::join('horarios', 'medico_horarios.id_horario', '=', 'horarios.id')
+            ->join('turnos', 'horarios.id_turno', '=', 'turnos.id')
+            ->where('medico_horarios.id_medico', $medicoId)
+            ->select('horarios.id','horarios.horaI', 'horarios.horaF', 'horarios.dia', 'turnos.nombre')
+            ->get();
+            $horariosArray = $horarios->toArray();
+        // Agregar una declaración de depuración para verificar los horarios obtenidos
+        \Log::info('Horarios obtenidos:', $horariosArray);
+
+        // Devolver los horarios en formato JSON
+        return response()->json($horarios);
+    
+        
+
+    }
+
+
+
     
 
     public function otraManera()
