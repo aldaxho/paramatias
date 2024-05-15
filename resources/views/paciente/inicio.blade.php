@@ -23,7 +23,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            
                             <th>Nombre de la Especialidad</th>
                             <th>Acciones</th>
                         </tr>
@@ -31,7 +31,7 @@
                     <tbody>
                         @foreach ($especialidades as $especialidad)
                             <tr>
-                                <td>{{ $especialidad->id }}</td>
+                                
                                 <td>{{ $especialidad->nombre }}</td>
                                 <td>
                                     <button class="btn btn-primary mostrarServiciosBtn" data-especialidad-id="{{ $especialidad->id }}">Mostrar Servicios</button>
@@ -50,7 +50,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            
                             <th>Nombre del Médico</th>
                             <th>Acciones</th>
                         </tr>
@@ -58,8 +58,8 @@
                     <tbody>
                         @foreach ($medicos as $medico)
                             <tr>
-                                <td>{{ $medico->id }}</td>
-                                <td>{{ $medico->nombre }}</td>
+                                
+                                <td>{{ $medico->user->nombres }}</td>
                                 <td>
                                     <button class="btn btn-success seleccionarHoraBtn" data-medico-id="{{ $medico->id }}">Seleccionar</button>
                                 </td>

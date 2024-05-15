@@ -47,8 +47,8 @@
                     <select class="text_color" name="id_medico" required="">
                         <option value="" selected>Seleccionar Medico...</option>
                             @foreach ($medico as $user)
-                                <option value="{{ $user->id}}">{{ $user->id}}
-                                    ...{{ $user->nombres}}</option>
+                                <option value="{{ $user->id}}">{{ $user->user->id}}
+                                    ...{{ $user->user->nombres}}</option>
                             @endforeach
                     </select>
             </div>
@@ -66,7 +66,7 @@
             <tr>
                 <th>ID</th>
                 <th>Tipo de Servicio</th>
-                <th>Id del usarioROl </th>   <!-- tengo que modificar y que se muestre en la vista el nombre del medico y no el id de la  tabla usuarioROl -->
+                <th>Nombre del Medico </th>   <!-- tengo que modificar y que se muestre en la vista el nombre del medico y no el id de la  tabla usuarioROl -->
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -75,7 +75,7 @@
                 <tr>
                     <td>{{ $servicio->id }}</td>
                     <td>{{ $servicio->tipo_servicio }}</td>
-                    <td>{{ $servicio->id_medico }}</td>
+                    <td>{{ $servicio->medico->nombres }}</td>
                     <td>
                         <button href="{{ route('index.edit', $servicio->id) }}" type="button" class="btn btn-info" data-toggle="modal" data-target="#editServiceModal-{{ $servicio->id }}">
                             Editar
