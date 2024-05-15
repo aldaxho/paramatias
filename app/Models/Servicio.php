@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Servicio;
+use App\Models\Users;
 
 class Servicio extends Model
 {
@@ -17,5 +18,9 @@ class Servicio extends Model
     // {
     //     return $this->hasMany(ServicioHorario::class, 'id_servicio');
     // }
+    public function medico()
+    {
+        return $this->belongsTo(User::class, 'id_medico', 'id');
+    }
 
 }
