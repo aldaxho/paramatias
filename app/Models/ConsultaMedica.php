@@ -12,7 +12,7 @@ class consultaMedica extends Model
     protected $fillable = [
         'fecha',
         'id_paciente',
-        'id_servicios',
+        'id_especialidad',
         'id_consultorio',
     ];
     public function consultaMedica()
