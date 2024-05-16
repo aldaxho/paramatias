@@ -150,7 +150,7 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -405,6 +405,23 @@ return [
                     'text' => 'Horario del medico',
                     'url'  => 'mi-horario',
                     'icon' => 'fas fa-fw fa-user',
+                ], 
+            ],
+        ],
+        [
+            'text'    => 'Gestionar Equipo',
+           // 'icon'    => 'fas fa-fw fa-book',
+           // 'can' => 'gestion academica',
+            'submenu' => [
+                [
+                    'text' => 'Equipo-medico',
+                    'url'  => 'cat-equipo-medico',
+                    'icon' => 'fas fa-fw fa-user',
+                ],  
+                [
+                   // 'text' => 'Horario del medico',
+                   // 'url'  => 'mi-horario',
+                   // 'icon' => 'fas fa-fw fa-user',
                 ], 
             ],
         ],

@@ -102,5 +102,9 @@ Route::delete('/equipoMdestroy/{id}',[EquipoMedicoController::class,'destroy'])-
 
 
 use App\Http\Controllers\ConsultaMedicaControlador;
+//use App\Http\Controllers\CitaController;
+
+Route::post('/guardar-cita', [ConsultaMedicaControlador::class, 'guardarCita'])->name('guardar-cita');
+Route::get('/obtener-consulta-medica', [ConsultaMedicaControlador::class, 'obtenerConsultaMedica'])->name('obtener-consulta-medica');
 
 

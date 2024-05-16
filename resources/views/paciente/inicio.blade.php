@@ -2,6 +2,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
     <link rel="stylesheet" href="{{ asset('/service/service.css') }}">
     <!-- CSS de Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -114,6 +116,13 @@
     <button class="btn btn-primary metodoPagoBtn" data-metodo-pago="transferencia">Transferencia</button>
 </div>
 
+<div id="fichaConsulta" style="display: none;">
+    <h2>Ficha de Consulta Médica</h2>
+    <div id="datosConsulta">
+        <!-- Aquí se mostrarán los datos de la consulta médica -->
+    </div>
+    <button id="descargarPDF">Descargar PDF</button>
+</div>
 
 <!-- <script>
     // Escuchar el evento 'click' en el botón Seleccionar (para mostrar los horarios disponibles)
@@ -204,7 +213,8 @@
         btn.addEventListener('click', () => {
             // Obtener el ID del médico asociado al botón
             const medicoId = btn.dataset.medicoId;
-
+            // Guardar el ID del médico en el almacenamiento local
+            localStorage.setItem('medicoId', medicoId);
             // Hacer una solicitud AJAX para obtener los horarios del médico
             fetch(`/obtener-horarios?medico_id=${medicoId}`)
             .then(response => response.json())
@@ -256,7 +266,7 @@
     });
 }
 
- // Escuchar el evento 'click' en los botones de método de pago
+// Escuchar el evento 'click' en los botones de método de pago
 document.querySelectorAll('.metodoPagoBtn').forEach(btn => {
     btn.addEventListener('click', () => {
         // Obtener el método de pago seleccionado
@@ -264,16 +274,31 @@ document.querySelectorAll('.metodoPagoBtn').forEach(btn => {
 
         // Obtener el ID del horario seleccionado del almacenamiento local
         const horarioId = localStorage.getItem('horarioSeleccionado');
+        // Obtener el ID del especialidad seleccionado del almacenamiento local
+        const especialidadId = localStorage.getItem('especialidadSeleccionado');
+        // Obtener el ID del médico del almacenamiento local
+        const medicoId = localStorage.getItem('medicoId');
+        // Obtener la fecha actual en formato YYYY-MM-DD
+        const fechaActual = new Date().toISOString().split('T')[0];
+        // Obtener el token CSRF del meta tag en el HTML
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         // Realizar una solicitud AJAX para guardar la cita en la base de datos
         fetch('/guardar-cita', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken 
             },
             body: JSON.stringify({
                 horarioId: horarioId,
                 metodoPago: metodoPago,
+                fecha: fechaActual,
+                // Agrega el ID del paciente logueado y el ID de la especialidad seleccionada aquí
+                idmedico: medicoId,
+                idEspecialidad: especialidadId,
+                 // Siempre se envía 1, como mencionaste
+                //idconsulta: 1
             }),
         })
         .then(response => response.json())
@@ -285,7 +310,39 @@ document.querySelectorAll('.metodoPagoBtn').forEach(btn => {
             console.error('Error al guardar la cita:', error);
         });
     });
-}); 
+
+
+    btn.addEventListener('click', () => {
+        // Ocultar los botones del método de pago
+        document.querySelectorAll('.metodoPagoBtn').forEach(btn => {
+            btn.style.display = 'none';
+        });
+
+        // Mostrar la ficha de consulta médica
+        document.getElementById('fichaConsulta').style.display = 'block';
+
+        // Realizar una solicitud AJAX para obtener la información de la consulta médica
+        fetch(`/obtener-consulta-medica`)
+            .then(response => response.json())
+            .then(data => {
+                // Mostrar los datos de la consulta médica en la ficha
+                const datosConsulta = document.getElementById('datosConsulta');
+                datosConsulta.innerHTML = `
+                <p>ID de la ficha: ${data[data.length - 1].id}</p>
+                <p>Fecha: ${data[data.length - 1].fecha}</p>
+                <p>Nombre del paciente: ${data[data.length - 1].nombre_usuario}</p>
+                <p>Especialidad solicitada: ${data[data.length - 1].nombre_especialidad}</p>
+                <p>Numero del consultorio : ${data[data.length - 1].nombre_consultorio}</p>
+                <p>Otros datos...</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error al obtener la consulta médica:', error);
+            });
+    });
+});
+
+ 
 
 
     // Escuchar el evento 'click' en el botón Volver a Médicos
@@ -330,7 +387,10 @@ document.querySelectorAll('.seleccionarBtn').forEach(btn => {
             // Ocultar la tabla de especialidades y mostrar la tabla de médicos
             document.getElementById('tablaEspecialidades').style.display = 'none';
             tablaMedicos.style.display = 'block';
-
+            // Obtener el ID del especialidad seleccionado
+            //const especialidadId = btn.dataset.especialidadId;
+             // Guardar el ID del especialidad seleccionado en el almacenamiento local
+             localStorage.setItem('especialidadSeleccionado', especialidadId);
             // Llamar a la función para manejar el evento 'click' en los botones Seleccionar de la tabla de médicos después de actualizar la tabla
             handleSeleccionarMedico();
         })
